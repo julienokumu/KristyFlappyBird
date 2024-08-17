@@ -70,7 +70,8 @@ window.onload = function () {
   //Generation of pipes, interval 1.5s
   setInterval(placePipes, 1500);
   //Generating the jump function
-  document.addEventListener("keydown", "touchstart", moveBird);
+  document.addEventListener("keydown", moveBird);
+  document.addEventListener("touchstart", handleTouchStart);
 };
 
 function update() {
@@ -157,20 +158,18 @@ function placePipes() {
   pipeArray.push(bottomPipe);
 }
 
-function moveBird(e) {
-  if (
-    e.code == "Space" ||
-    e.code == "ArrowUp" ||
-    e.code == "KeyX" ||
-    e.code == "touchstart"
-  ) {
-    //Jump function
-    velocityY = -6;
+function handleTouchStart(event) {
+  if (event.touches.length == 1) {
+    moveBird({ code: "Space" }); //Pass a fake event object
+  }
+}
 
-    //Reseting game for requestAnimationFrame
-    if (gameOver) {
-      (bird.y = birdY), (pipeArray = []), (score = 0), (gameOver = false);
-    }
+function moveBird(e) {
+  //Jump function and Reseting game for requestAnimationFrame
+  if (gameOver) {
+    (bird.y = birdY), (pipeArray = []), (score = 0), (gameOver = false);
+  } else {
+    velocityY = -6;
   }
 }
 
