@@ -187,7 +187,7 @@ function moveBird(e) {
       (hasJumped = false);
   } else {
     if (velocityY < 0) return; // Ensures bird doesnt move upwards if its already moving updwards
-    velocityY = -8;
+    velocityY = -12;
     hasJumped = true;
   }
 }
