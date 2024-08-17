@@ -74,6 +74,8 @@ window.onload = function () {
   document.addEventListener("touchstart", handleTouchStart);
 };
 
+let hasJumped = false;
+
 function update() {
   requestAnimationFrame(update);
   if (gameOver) {
@@ -84,8 +86,12 @@ function update() {
   //Drawing the bird repeatedly for each frame
   velocityY += gravity;
   //bird.y += velocityY;
-  //To ensure bird doesnt move beyond canvas
-  bird.y = Math.max(bird.y + velocityY, 0);
+  //To ensure bird doesnt move beyond canvas and drop before game starts
+  if (!gameOver && hasJumped) {
+    velocityY += gravity;
+    bird.y = Math.max(bird.y + velocityY, 0);
+  }
+
   context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
   if (bird.y > board.height) {
@@ -158,18 +164,31 @@ function placePipes() {
   pipeArray.push(bottomPipe);
 }
 
+let touchTimeout = null;
+
 function handleTouchStart(event) {
   if (event.touches.length == 1) {
-    moveBird({ code: "Space" }); //Pass a fake event object
+    if (touchTimeout == null) {
+      touchTimeout = setTimeout(() => {
+        moveBird({ code: "Space" });
+        touchTimeout = null;
+      }, 200); //200ms delay
+    } //Pass a fake event object
   }
 }
 
 function moveBird(e) {
   //Jump function and Reseting game for requestAnimationFrame
   if (gameOver) {
-    (bird.y = birdY), (pipeArray = []), (score = 0), (gameOver = false);
+    (bird.y = birdY),
+      (pipeArray = []),
+      (score = 0),
+      (gameOver = false),
+      (hasJumped = false);
   } else {
-    velocityY = -6;
+    if (velocityY < 0) return; // Ensures bird doesnt move upwards if its already moving updwards
+    velocityY = -8;
+    hasJumped = true;
   }
 }
 
