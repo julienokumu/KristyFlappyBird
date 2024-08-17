@@ -1,13 +1,13 @@
 //Variales for the board
 let board;
-let boardWidth = 864;
-let boardHeight = 768;
+let boardWidth = 360;
+let boardHeight = 640;
 let context;
 
 //Variable for the bird
 let birdWidth = 34;
 let birdHeight = 24;
-let birdX = boardWidth / 20;
+let birdX = boardWidth / 8;
 let birdY = boardHeight / 2;
 let birdImg;
 
@@ -71,6 +71,7 @@ window.onload = function () {
   setInterval(placePipes, 1500);
   //Generating the jump function
   document.addEventListener("keydown", moveBird);
+  document.addEventListener("touchmove", moveBird);
 };
 
 function update() {
@@ -121,7 +122,7 @@ function update() {
 
   //Showing "Game Over" after collision
   if (gameOver) {
-    context.fillText("GAME OVER", 300, 90);
+    context.fillText("GAME OVER", 50, 90);
   }
 }
 function placePipes() {
@@ -158,7 +159,12 @@ function placePipes() {
 }
 
 function moveBird(e) {
-  if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX") {
+  if (
+    e.code == "Space" ||
+    e.code == "ArrowUp" ||
+    e.code == "KeyX" ||
+    e.code == "touchmove"
+  ) {
     //Jump function
     velocityY = -6;
 
