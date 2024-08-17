@@ -70,8 +70,7 @@ window.onload = function () {
   //Generation of pipes, interval 1.5s
   setInterval(placePipes, 1500);
   //Generating the jump function
-  document.addEventListener("keydown", moveBird);
-  document.addEventListener("touchmove", moveBird);
+  document.addEventListener("keydown", "touchstart", moveBird);
 };
 
 function update() {
@@ -163,7 +162,7 @@ function moveBird(e) {
     e.code == "Space" ||
     e.code == "ArrowUp" ||
     e.code == "KeyX" ||
-    e.code == "touchmove"
+    e.code == "touchstart"
   ) {
     //Jump function
     velocityY = -6;
